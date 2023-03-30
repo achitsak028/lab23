@@ -1,10 +1,52 @@
 #include <windows.h>
-
+int x,y;
+char l[100];
+char textSaved1[100];
+char textSaved2[100];
+char szClassName[] = "TextEntry";
 /* This is where all the input to the window goes to */
+HWND textfield, buttonM, buttonN, buttonO, buttonP, TextBox1, TextBox2;
 LRESULT CALLBACK WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam) {
 	switch(Message) {
-		
-		/* Upon destruction, tell the main thread to stop */
+	    case WM_CREATE:
+			textfield = CreateWindow("STATIC","Please input two numbers", WS_VISIBLE | WS_CHILD, 10, 10, 220, 30, hwnd, NULL, NULL, NULL);
+			buttonM = CreateWindow("Button", "+", WS_VISIBLE | WS_CHILD | WS_BORDER, 60, 125, 25, 25, hwnd, (HMENU) 1, NULL, NULL);
+			buttonN= CreateWindow("Button", "-", WS_VISIBLE | WS_CHILD | WS_BORDER, 90, 125, 25, 25, hwnd, (HMENU) 2, NULL, NULL);
+			buttonO = CreateWindow("Button", "*", WS_VISIBLE | WS_CHILD | WS_BORDER, 120, 125, 25, 25, hwnd, (HMENU) 3, NULL, NULL);
+			buttonP = CreateWindow("Button", "/", WS_VISIBLE | WS_CHILD | WS_BORDER, 150, 125, 25, 25, hwnd, (HMENU) 4, NULL, NULL);
+			TextBox1 = CreateWindow("EDIT", "", WS_BORDER | WS_CHILD | WS_VISIBLE, 40, 50, 160, 30, hwnd, NULL, NULL, NULL);
+			TextBox2 = CreateWindow("EDIT", "", WS_BORDER | WS_CHILD | WS_VISIBLE, 40, 80, 160, 30, hwnd, NULL, NULL, NULL);
+			break;
+
+		case WM_COMMAND:
+			GetWindowText(TextBox1, &textSaved1[0], 100);
+			GetWindowText(TextBox2, &textSaved2[0], 100);
+			x = atof(textSaved1);
+			y = atof(textSaved2);
+			switch (LOWORD(wParam))
+			{
+				case 1:
+					sprintf(t, "%f", x + y);
+					::MessageBeep(MB_ICONERROR);
+					::MessageBox(hwnd, l, "Result", MB_OK);
+					break;
+				case 2:
+					sprintf(t, "%f", x - y);
+					::MessageBeep(MB_ICONERROR);
+					::MessageBox(hwnd, l, "Result", MB_OK);
+					break;
+				case 3:
+					sprintf(t, "%f", x * y);
+					::MessageBeep(MB_ICONERROR);
+					::MessageBox(hwnd, l, "Result", MB_OK);
+					break;
+				case 4:
+					sprintf(t, "%f", x / y);
+					::MessageBeep(MB_ICONERROR);
+					::MessageBox(hwnd, l, "Result", MB_OK);
+					break;
+			}
+			/* Upon destruction, tell the main thread to stop */
 		case WM_DESTROY: {
 			PostQuitMessage(0);
 			break;
@@ -44,8 +86,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	hwnd = CreateWindowEx(WS_EX_CLIENTEDGE,"WindowClass","Caption",WS_VISIBLE|WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, /* x */
 		CW_USEDEFAULT, /* y */
-		640, /* width */
-		480, /* height */
+		250, /* width */
+		200, /* height */
 		NULL,NULL,hInstance,NULL);
 
 	if(hwnd == NULL) {
